@@ -1,0 +1,3 @@
+[submodule "esp_i2s_parallel"]
+	path = esp_i2s_parallel
+	url = https://github.com/Icaltary/esp_i2s_parallel.git
