@@ -5,17 +5,22 @@ This micropython module is a driver for RGB LED matrix panels. Such panels are a
 To start with you need the ESP toolchain and the mircopython source on your computer. Refer to the micropython docs to get started.
 To build micropython with this driver included:
 ```
-# setup path and virtualenv
+# clone the repo
+cd <MODULE DIR>
+git clone https://github.com/Icaltary/ledmatrix.git
+git submodule update --init
 
+# build
+[setup path and virtualenv]
 cd <PATH TO MICROPYTHON>/ports/esp32
-make USER_C_MODULES=<PATH TO MODULES DIR> CFLAGS_EXTRA=-DMODULE_LEDMATRIX_ENABLED=1
+make USER_C_MODULES=<MODULE DIR> CFLAGS_EXTRA=-DMODULE_LEDMATRIX_ENABLED=1
 
 # then flash
 esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 build-GENERIC/firmware.bin
 ```
 ## Using the driver
 Once micropython is built with the module and flashed onto a controller, you can use it to display things on your LED matrix.
-###Connecting the matrix to the ESP
+### Connecting the matrix to the ESP
 I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V IOs. Depending on the power supply and your matrix it works without, but no guarantees! You can use any GPIOs in any order. Just be careful not to block an IO you use otherwise. 
 Don't worry too much about the wire layout, but be aware that the frequencies are quite high. So avoid unnecessary long wires. You will also need an external power source for the display if you want to run it at a high brightness since it can draw much more power than a typical USB can supply.
 
