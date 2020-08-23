@@ -1,7 +1,7 @@
-#ESP32 LED matrix display driver for micropython
+# ESP32 LED matrix display driver for micropython
 This micropython module is a driver for RGB LED matrix panels. Such panels are available very cheap, but they are intended to be used as part of a larger display where they are driven by an FPGA. Driving such a display from a CPU usually requires a very high CPU load in order to display a flicker-free image. This driver however uses the I2S peripheral of the ESP32 in conjunction with DMA to drive the display efficiently without involving the CPU at all.
 
-##Building micropython with this driver
+## Building micropython with this driver
 To start with you need the ESP toolchain and the mircopython source on your computer. Refer to the micropython docs to get started.
 To build micropython with this driver included:
 ```
@@ -13,13 +13,13 @@ make USER_C_MODULES=<PATH TO MODULES DIR> CFLAGS_EXTRA=-DMODULE_LEDMATRIX_ENABLE
 # then flash
 esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 build-GENERIC/firmware.bin
 ```
-##Using the driver
+## Using the driver
 Once micropython is built with the module and flashed onto a controller, you can use it to display things on your LED matrix.
 ###Connecting the matrix to the ESP
 I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V IOs. Depending on the power supply and your matrix it works without, but no guarantees! You can use any GPIOs in any order. Just be careful not to block an IO you use otherwise. 
 Don't worry too much about the wire layout, but be aware that the frequencies are quite high. So avoid unnecessary long wires. You will also need an external power source for the display if you want to run it at a high brightness since it can draw much more power than a typical USB can supply.
 
-###Initializing the driver
+### Initializing the driver
 The driver is initialized by the `ledmatrix.init` function. Of course you need to adjust the GPIOs to match your setup.
 ```
 import ledmatrix
@@ -65,7 +65,7 @@ brightness, default=width-2
     Must be between 0 (off) and width - 2 (max)
 ```
 
-###Display an image
+### Display an image
 The driver has its own internal framebuffer. Currently the only a full redraw is supported, so no partial updates. The `show` function is used to copy data from an external buffer into the internal structures.
 ```
 # create the framebuffer object and fill blue
@@ -92,13 +92,13 @@ mono_color, optional
     Color to use for non-rgb images.
 ```
 
-###Change the global brightness
+### Change the global brightness
 The global brightness can be changed independently without redrawing the screen. The specified brightness value must be between 0 (off) and width - 2 (max).
 ```
 ledmatrix.set_brightness(3)
 ```
 
-###Miscellaneous functions
+### Miscellaneous functions
 ```
 # turn screen off and stop data transfer
 ledmatrix.stop()
@@ -140,5 +140,5 @@ So with a normal 64*32 pixel display and a color depth of 4 bit (default), a clo
 
 The maximum frequency is limited by the display and the used level shifters. Also the cabling can be a limiting factor. For my test setup the limit is about 16 MHz. Above that the image gets blurry. 
 
-##License
+## License
 This driver is licensed under the MIT license.
