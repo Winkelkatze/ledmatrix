@@ -72,12 +72,6 @@
 //#define DEBUG_DMA
 //#define DEBUG_TEST_ON_INIT
 
-
-//ledmatrix.init(io_colors=(2,15,4,16,27,17),io_rows=(5,18,19,21),io_clk=22,io_oe=25,io_lat=26,width=64,invert=True,brightness=3)
-
-
-
-
 typedef struct
 {
 	uint8_t *stream_data;
@@ -490,23 +484,23 @@ STATIC mp_obj_t ledmatrix_init(size_t n_args, const mp_obj_t *pos_args, mp_map_t
 
 	// The height is implicitly defined by the number of rows
 	static const mp_arg_t allowed_args[] = {
-    /*  0 */ { MP_QSTR_io_colors,       MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = mp_const_none}},
-    /*  1 */ { MP_QSTR_io_rows,         MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = mp_const_none}},
-    /*  2 */ { MP_QSTR_io_oe,           MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
-    /*  3 */ { MP_QSTR_io_lat,          MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
-    /*  4 */ { MP_QSTR_io_clk,          MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
-    /*  5 */ { MP_QSTR_width,           MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
-    /*  6 */ { MP_QSTR_color_depth,     MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 4}},
-    /*  7 */ { MP_QSTR_clock_speed_khz, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 2500}},
-    /*  8 */ { MP_QSTR_invert,          MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
-    /*  9 */ { MP_QSTR_double_buffer,   MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
-    /* 10 */ { MP_QSTR_column_swap,     MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = true} },
-    /* 11 */ { MP_QSTR_single_channel,  MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
-    /* 12 */ { MP_QSTR_brightness,      MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1}},
-    };
+	/*  0 */ { MP_QSTR_io_colors,       MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = mp_const_none}},
+	/*  1 */ { MP_QSTR_io_rows,         MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = mp_const_none}},
+	/*  2 */ { MP_QSTR_io_oe,           MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
+	/*  3 */ { MP_QSTR_io_lat,          MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
+	/*  4 */ { MP_QSTR_io_clk,          MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
+	/*  5 */ { MP_QSTR_width,           MP_ARG_KW_ONLY | MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 0}},
+	/*  6 */ { MP_QSTR_color_depth,     MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 4}},
+	/*  7 */ { MP_QSTR_clock_speed_khz, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 2500}},
+	/*  8 */ { MP_QSTR_invert,          MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
+	/*  9 */ { MP_QSTR_double_buffer,   MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
+	/* 10 */ { MP_QSTR_column_swap,     MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = true} },
+	/* 11 */ { MP_QSTR_single_channel,  MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
+	/* 12 */ { MP_QSTR_brightness,      MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1}},
+	};
 
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+	mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
+	mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
 	matrix.width = args[5].u_int;
 	matrix.color_depth = args[6].u_int;
@@ -649,7 +643,7 @@ STATIC mp_obj_t ledmatrix_init(size_t n_args, const mp_obj_t *pos_args, mp_map_t
 
 	start_dma();
 
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(ledmatrix_init_obj, 0, ledmatrix_init);
 
@@ -662,15 +656,15 @@ STATIC mp_obj_t ledmatrix_set_brightness(mp_obj_t b)
 {
 	if (!matrix.initialized)
 		mp_raise_ValueError(MP_ERROR_TEXT("ledmatrix not initialized"));
-    if (!mp_obj_is_small_int(b))
+	if (!mp_obj_is_small_int(b))
 		mp_raise_TypeError(MP_ERROR_TEXT("expected small int"));
 
-    int newb = MP_OBJ_SMALL_INT_VALUE(b);
+	int newb = MP_OBJ_SMALL_INT_VALUE(b);
 
-    if (newb < 0 || newb >= matrix.width - 1)
+	if (newb < 0 || newb >= matrix.width - 1)
 		mp_raise_ValueError(MP_ERROR_TEXT("Brightness must be between 0 and width - 2"));
 
-    matrix.brightness = newb + 1;
+	matrix.brightness = newb + 1;
 
 	// This somewhat bypasses the double buffer feature,
 	// but the global brightness control is not really intended to be used frequent
@@ -680,7 +674,7 @@ STATIC mp_obj_t ledmatrix_set_brightness(mp_obj_t b)
 	{
 		create_control_pattern(&matrix.buffer[1]);
 	}
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(ledmatrix_set_brightness_obj, ledmatrix_set_brightness);
 
@@ -704,16 +698,16 @@ STATIC mp_obj_t ledmatrix_show(size_t n_args, const mp_obj_t *pos_args, mp_map_t
 		mp_raise_ValueError(MP_ERROR_TEXT("ledmatrix not initialized"));
 
 	static const mp_arg_t allowed_args[] = {
-        { MP_QSTR_fb, MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_int = 0} },
-        { MP_QSTR_mono_color, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1} },
-        { MP_QSTR_mode, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = COLOR_RGB565} },
-    };
+		{ MP_QSTR_fb, MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_int = 0} },
+		{ MP_QSTR_mono_color, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1} },
+		{ MP_QSTR_mode, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = COLOR_RGB565} },
+	};
 
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+	mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
+	mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
-    mp_buffer_info_t src;
-    mp_get_buffer_raise(args[0].u_obj, &src, MP_BUFFER_READ);
+	mp_buffer_info_t src;
+	mp_get_buffer_raise(args[0].u_obj, &src, MP_BUFFER_READ);
 
 	int color = args[1].u_int;
 	if (color >= 0)
@@ -758,7 +752,7 @@ STATIC mp_obj_t ledmatrix_show(size_t n_args, const mp_obj_t *pos_args, mp_map_t
 		matrix.backbuffer ^= 1;
 	}
 
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(ledmatrix_show_obj, 1, ledmatrix_show);
 
@@ -771,7 +765,7 @@ STATIC mp_obj_t ledmatrix_stop()
 	if (!matrix.initialized)
 		mp_raise_ValueError(MP_ERROR_TEXT("ledmatrix not initialized"));
 	stop_dma();
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(ledmatrix_stop_obj, ledmatrix_stop);
 
@@ -783,7 +777,7 @@ STATIC mp_obj_t ledmatrix_resume()
 	if (!matrix.initialized)
 		mp_raise_ValueError(MP_ERROR_TEXT("ledmatrix not initialized"));
 	start_dma();
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(ledmatrix_resume_obj, ledmatrix_resume);
 
@@ -793,18 +787,18 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(ledmatrix_resume_obj, ledmatrix_resume);
 STATIC mp_obj_t ledmatrix_deinitialize()
 {
 	deinit();
-    return mp_const_none;
+	return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(ledmatrix_deinitialize_obj, ledmatrix_deinitialize);
 
 STATIC const mp_rom_map_elem_t ledmatrix_module_globals_table[] = {
-	    { MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(MP_QSTR_ledmatrix) },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_init), (mp_obj_t)&ledmatrix_init_obj },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_set_brightness), (mp_obj_t)&ledmatrix_set_brightness_obj },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_show), (mp_obj_t)&ledmatrix_show_obj },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_stop), (mp_obj_t)&ledmatrix_stop_obj },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_resume), (mp_obj_t)&ledmatrix_resume_obj },
-	    { MP_OBJ_NEW_QSTR(MP_QSTR_deinitialize), (mp_obj_t)&ledmatrix_deinitialize_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(MP_QSTR_ledmatrix) },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_init), (mp_obj_t)&ledmatrix_init_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_set_brightness), (mp_obj_t)&ledmatrix_set_brightness_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_show), (mp_obj_t)&ledmatrix_show_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_stop), (mp_obj_t)&ledmatrix_stop_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_resume), (mp_obj_t)&ledmatrix_resume_obj },
+		{ MP_OBJ_NEW_QSTR(MP_QSTR_deinitialize), (mp_obj_t)&ledmatrix_deinitialize_obj },
 		{ MP_ROM_QSTR(MP_QSTR_FB_RGB565), MP_ROM_INT(COLOR_RGB565) },
 		{ MP_ROM_QSTR(MP_QSTR_FB_GS8), MP_ROM_INT(COLOR_GS8) },
 		{ MP_ROM_QSTR(MP_QSTR_FB_MONO), MP_ROM_INT(COLOR_MONO) },
@@ -813,8 +807,8 @@ STATIC const mp_rom_map_elem_t ledmatrix_module_globals_table[] = {
 STATIC MP_DEFINE_CONST_DICT(ledmatrix_module_globals, ledmatrix_module_globals_table);
 
 const mp_obj_module_t ledmatrix_user_cmodule = {
-	    .base = { &mp_type_module },
-	        .globals = (mp_obj_dict_t*)&ledmatrix_module_globals,
+		.base = { &mp_type_module },
+		.globals = (mp_obj_dict_t*)&ledmatrix_module_globals,
 };
 
 MP_REGISTER_MODULE(MP_QSTR_ledmatrix, ledmatrix_user_cmodule, MODULE_LEDMATRIX_ENABLED);
