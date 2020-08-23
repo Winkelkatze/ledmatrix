@@ -21,7 +21,7 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 
 ## Using the driver
 Once micropython is built with the module and flashed onto a controller, you can use it to display things on your LED matrix.
 ### Connecting the matrix to the ESP
-I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V IOs. Depending on the power supply and your matrix it works without, but no guarantees! You can use any GPIOs in any order. Just be careful not to block an IO you use otherwise. 
+I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V. Depending on the power supply and your display it may work without, but no guarantees! You can use any GPIOs of the ESP in any order. Just be careful not to block any IO you want use otherwise.
 Don't worry too much about the wire layout, but be aware that the frequencies are quite high. So avoid unnecessary long wires. You will also need an external power source for the display if you want to run it at a high brightness since it can draw much more power than a typical USB can supply.
 
 ### Initializing the driver
@@ -64,7 +64,7 @@ column_swap, default=True
     Swap the output for every second column, since on many displays these are swapped internally.
 single_channel, default=False
     Single channel display with only three color lines.
-    Most displays are split vertically into an upper and lower half with two separate sets of color lines.
+    Almost all displays are split vertically into an upper and lower half with two separate sets of color lines.
 brightness, default=width-2
     Global brightness control.
     Must be between 0 (off) and width - 2 (max)
@@ -83,7 +83,7 @@ ledmatrix.show(buf)
 ```
 The driver also supports monochrome (VLSB) and grayscale (8 bit) images. In this case the color is passed as parameter to the `show` function.
 
-Parameters of the `show` function
+The parameters of the `show` function are
 ```
 fb
     Framebuffer data
@@ -98,7 +98,7 @@ mono_color, optional
 ```
 
 ### Change the global brightness
-The global brightness can be changed independently without redrawing the screen. The specified brightness value must be between 0 (off) and width - 2 (max).
+The global brightness can be changed independently without redrawing the screen. The specified brightness value must be between `0` (off) and `width - 2` (full).
 ```
 ledmatrix.set_brightness(3)
 ```
@@ -116,13 +116,9 @@ ledmatrix.deinitialize()
 ```
 
 ## Memory requirements
-The driver uses one byte per pixel per bit of color depth for the stream buffer. This doubles for single channel displays. The DMA buffer takes additionally `12 bytes * (2 ^ color_depth - 1)` of memory for every 126 pixels of width.
+The driver uses one byte per pixel per bit of color depth for the stream buffer. The DMA buffer takes additionally `12 bytes * (2 ^ color_depth - 1)` of memory for every 126 pixels of width.
 ```
-Dual channel mode
 stream = width * height * color_depth
-
-Single channel mode
-stream = width * height * color_depth * 2
 
 dma = 12 * (2 ^ color_depth - 1) * (1 + width // 126)
 
@@ -143,7 +139,7 @@ fps            = sub_image_freq / (2 ^ color_depth - 1)
 ```
 So with a normal 64*32 pixel display and a color depth of 4 bit (default), a clock of 2.5 MHz (default) results in a frame rate of 162fps. The frame rate should be at least 100 fps to be relatively flicker-free. It can be lower at a higher color depth as long as there are no very dark pixels in the image. If a dark image is desired, use the global brightness control instead of a high color depth and dark pixels.
 
-The maximum frequency is limited by the display and the used level shifters. Also the cabling can be a limiting factor. For my test setup the limit is about 16 MHz. Above that the image gets blurry. 
+The maximum frequency is limited by the display and the used level shifters. Also the cabling can be a limiting factor. For my test setup the limit is about 16 MHz. Above that the image gets blurry.
 
 ## License
 This driver is licensed under the MIT license.
