@@ -52,7 +52,7 @@
 #define BITSTREAM_CTRL_LAT_BIT       1
 #define BITSTREAM_CTRL_ROW_START_BIT 2
 
-#define BITSTREAM_CTRL_OE_IO         8  // fast
+#define BITSTREAM_CTRL_OE_IO         8
 #define BITSTREAM_CTRL_LAT_IO        9
 #define BITSTREAM_CTRL_ROW_START_IO  10
 
@@ -181,7 +181,7 @@ static void deinit()
 	if (matrix.buffer[0].dma_desc) free(matrix.buffer[0].dma_desc);
 	if (matrix.buffer[1].stream_data) free(matrix.buffer[1].stream_data);
 	if (matrix.buffer[1].dma_desc) free(matrix.buffer[1].dma_desc);
-    memset(&matrix, 0, sizeof(matrix));
+	memset(&matrix, 0, sizeof(matrix));
 }
 
 static void initialize_buffer(stream_buffer_t *buf)

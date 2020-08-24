@@ -21,7 +21,7 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 
 ## Using the driver
 Once micropython is built with the module and flashed onto a controller, you can use it to display things on your LED matrix.
 ### Connecting the matrix to the ESP
-I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V. Depending on the power supply and your display it may work without, but no guarantees! You can use any GPIOs of the ESP in any order. Just be careful not to block any IO you want use otherwise.
+I won't give you a step-by-step guide to connect the matrix! There are plenty on the internet already. All input pins of the matrix need to be connected to the ESP. Usually a level shifter is required since the ESP runs on 3.3V and the matrix inputs are 5V. Depending on the power supply and your display it may work without, but no guarantees! You can use any GPIOs of the ESP in any order. Just be careful not to block any IOs you want use otherwise.
 Don't worry too much about the wire layout, but be aware that the frequencies are quite high. So avoid unnecessary long wires. You will also need an external power source for the display if you want to run it at a high brightness since it can draw much more power than a typical USB can supply.
 
 ### Initializing the driver
@@ -71,7 +71,7 @@ brightness, default=width-2
 ```
 
 ### Display an image
-The driver has its own internal framebuffer. Currently the only a full redraw is supported, so no partial updates. The `show` function is used to copy data from an external buffer into the internal structures.
+The driver has its own internal framebuffer. Currently only a full redraw is supported, so no partial updates. The `ledmatrix.show` function is used to copy data from an external buffer into the internal structures.
 ```
 # create the framebuffer object and fill blue
 buf = bytearray(64*32*2)
@@ -109,21 +109,18 @@ ledmatrix.set_brightness(3)
 ledmatrix.stop()
 
 # turn screen back on
-ledmatrix.start()
+ledmatrix.resume()
 
 # deinitialize and free all memory
 ledmatrix.deinitialize()
 ```
 
 ## Memory requirements
-The driver uses one byte per pixel per bit of color depth for the stream buffer. The DMA buffer takes additionally `12 bytes * (2 ^ color_depth - 1)` of memory for every 126 pixels of width.
+The driver uses one byte per pixel per bit of color depth for the stream buffer. The DMA buffer takes additionally 12 bytes for every possible color value and every 126 pixels of width.
 ```
 stream = width * height * color_depth
-
 dma = 12 * (2 ^ color_depth - 1) * (1 + width // 126)
-
 total = stream + dma
-
 ```
 
 External memory can't be used, since it must be DMA accessible.
